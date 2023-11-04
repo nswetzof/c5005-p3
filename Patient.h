@@ -1,6 +1,9 @@
-// TODO: DOCUMENT
-// Created by Nathan on 11/2/2023.
-//
+// Nathan Swetzof
+// Patient.h
+// November 4, 2023
+// Specification and implementation file for Patient class used to represent
+//      a single patient in a priority queue.  Implements comparison operators
+//      to determine relative priority between patients.
 
 #ifndef P3_PATIENT_H
 #define P3_PATIENT_H
@@ -13,7 +16,9 @@ using namespace std;
 class Patient {
 public:
     Patient(int, const string &, int);
-    // TODO: document
+    // Default constructor creates patient with priority code corresponding
+    //      with first parameter, name corresponding with second parameter, and
+    //      arrival order corresponding with third parameter
 
     bool operator<(const Patient &) const;
     // Less than operator for two Patients.  Return true if Patient passed into
@@ -49,9 +54,9 @@ public:
     //      priority code, and patient name
 
 private:
-    string name;
-    int priorityCode;
-    int arrivalOrder;
+    string name; // patient name
+    int priorityCode; // patient priority code (1 to 4)
+    int arrivalOrder; // order of patient arrival in emergency room
 
     string getPriorityString() const;
     // Return string corresponding to priority code based on priority code

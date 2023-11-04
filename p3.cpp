@@ -1,8 +1,16 @@
+// Nathan Swetzof
 // p3.cpp
-// TODO: add functional documentation (and inline comments, as necessary)
+// 11/4/23
+// Interface for a hospital triage system allows user to add patients to the
+//      emergency room and uses priority queue to determine which patients will
+//      be seen next and removed from the queue.
+// Input: Accepts user commands to the console for individual patients or to
+//      add patients listed in a separate file.
+// Process: Add or remove patients from the priority queue
+// Output: Displays patient information for all patients or for the highest
+//      priority patient.
 
 #include "PatientPriorityQueue.h"
-#include "Patient.h"
 
 #include <fstream>
 #include <iostream>
@@ -42,25 +50,12 @@ void execCommandsFromFileCmd(string, PatientPriorityQueue &);
 string delimitBySpace(string &);
 // Delimits (by space) the string from user or file input.
 
+string removeWhitespace(const string &);
+// Returns a string that matches the string passed into function with leading
+//      and trailing whitespace removed.
+
 
 int main() {
-    Patient p1("urgent", "nate", 1),
-        p2("immediate", "nat", 2);
-
-    vector<Patient> v;
-
-    v.push_back(p1);
-    v.push_back(p2);
-
-    Patient p = v.at(v.size() - 1);
-    PatientPriorityQueue q;
-
-    q.add("urgent", "nate");
-    q.add("immediate", "nat");
-
-    cout << q.to_string() << endl;
-
-    exit(0);
 
 	// declare variables
 	string line;
@@ -70,6 +65,7 @@ int main() {
 
 	// process commands
 	PatientPriorityQueue priQueue;
+    execCommandsFromFileCmd("commands.txt", priQueue); // TODO: DELETE
 	do {
 		cout << "\ntriage> ";
 		getline(cin, line);
@@ -79,8 +75,6 @@ int main() {
 	goodbye();
 }
 
-#define DEBUG
-#ifndef DEBUG
 bool processLine(string line, PatientPriorityQueue &priQueue) {
 	// get command
 	string cmd = delimitBySpace(line);
@@ -125,24 +119,41 @@ void addPatientCmd(string line, PatientPriorityQueue &priQueue) {
 		return;
 	}
 
-	// TODO: add logic to remove leading/trailing spaces
-	// TODO: validate priority is between 1 and 4
-	// TODO: add patient
+    // remove leading and trailing whitespace
+	priority = removeWhitespace(priority);
+    name = removeWhitespace(name);
+
+	// validate priority is between 1 and 4 and add patient
+    if (priority == "immediate" || priority == "emergency"
+        || priority == "urgent" || priority == "minimal") {
+        priQueue.add(priority, name);
+        cout << "\nAdded patient \"" << name << "\" to the priority system"
+            << endl;
+    }
+    else
+        cout << "Error: invalid priority code (must be 'immediate', 'emergency'"
+            << ", 'urgent' or 'minimal'." << endl;
 }
 
 void peekNextCmd(PatientPriorityQueue &priQueue) {
-	// TODO: shows next patient to be seen
+    string name = priQueue.peek().to_string();
+	cout << "Highest priority patient to be called next: "
+        << name.substr(0, name.find_first_of('{') - 1) << endl;
 }
 
 void removePatientCmd(PatientPriorityQueue &priQueue) {
-	// TODO: removes and shows next patient to be seen
+	string name = priQueue.remove().to_string();
+    cout << "This patient will now be seen: "
+        << name.substr(0, name.find_first_of('{') - 1) << endl;
 }
 
 void showPatientListCmd(PatientPriorityQueue &priQueue) {
 	cout << "# patients waiting: " << priQueue.size() << endl;
 	cout << "  Arrival #   Priority Code   Patient Name\n"
 		  << "+-----------+---------------+--------------+\n";
-	// TODO: shows patient detail in heap order
+
+    // shows patient detail in heap order
+    cout << priQueue.to_string();
 }
 
 void execCommandsFromFileCmd(string filename, PatientPriorityQueue &priQueue) {
@@ -178,11 +189,11 @@ string delimitBySpace(string &s) {
 }
 
 void welcome() {
-	// TODO
+	cout << "Welcome to the hospital triage system." << endl;
 }
 
 void goodbye() {
-	// TODO
+	cout << "Exiting hospital triage system." << endl;
 }	
 
 void help() {
@@ -201,4 +212,12 @@ void help() {
 << "quit        Exits the program\n";
 }
 
-#endif
+string removeWhitespace(const string &text) {
+    stringstream ss;
+
+    size_t begin, end;
+    begin = text.find_first_not_of(" \t");
+    end = text.find_last_not_of(" \t");
+
+    return text.substr(begin, end - begin + 1);
+}

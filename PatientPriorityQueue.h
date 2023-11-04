@@ -1,12 +1,15 @@
-//
-// Created by Nathan on 11/2/2023.
-//
+// Nathan Swetzof
+// PatientPriorityQueue.h
+// November 4, 2023
+// Specification and implementation file for PatientPriorityQueue class used
+//      to create a priority queue for patients entered into an emergency room.
 
 #ifndef P3_PATIENTPRIORITYQUEUE_H
 #define P3_PATIENTPRIORITYQUEUE_H
 
 
 #include <cassert>
+#include <iomanip>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -106,10 +109,26 @@ int PatientPriorityQueue::size() const {
 
 string PatientPriorityQueue::to_string() const {
     stringstream ss;
+    string patientInfo, name, priorityCode, arrivalOrder;
+    size_t spaceAfterName, priorityIndex, arrivalIndex;
     vector<Patient>::const_iterator it = patients.begin();
 
     while(it != patients.end()) {
-        ss << it++->to_string() << '\n';
+        patientInfo = it++->to_string();
+
+        spaceAfterName = patientInfo.find_first_of('{') - 1;
+        priorityIndex = patientInfo.find_first_of('=') + 1;
+        arrivalIndex = patientInfo.find_first_of('=', priorityIndex + 1) + 1;
+
+        name = patientInfo.substr(0, spaceAfterName);
+        priorityCode = patientInfo.substr(priorityIndex,
+                          patientInfo.find_first_of(',') - priorityIndex);
+        arrivalOrder = patientInfo.substr(arrivalIndex,
+                          patientInfo.find_first_of(' ', arrivalIndex)
+                          - arrivalIndex);
+
+        ss << right << setw(7) << arrivalOrder << "\t\t"
+            << left << setw(15) << priorityCode << name << '\n';
     }
 
     return ss.str();
