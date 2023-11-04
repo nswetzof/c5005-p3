@@ -12,8 +12,7 @@ using namespace std;
 
 class Patient {
 public:
-    Patient(const string &, const string &, int);
-    // TODO: Change signature to make priorityCode an int.  Will handle finding priority code in PatientPriorityQueue
+    Patient(int, const string &, int);
     // TODO: document
 
     bool operator<(const Patient &) const;
@@ -59,16 +58,8 @@ private:
     //      integer field.
 };
 
-Patient::Patient(const string &priority, const string &name, int arrivalOrder) {
-    if (priority == "immediate")
-        priorityCode = 1;
-    else if (priority == "emergency")
-        priorityCode = 2;
-    else if (priority == "urgent")
-        priorityCode = 3;
-    else
-        priorityCode = 4;
-
+Patient::Patient(int priority, const string &name, int arrivalOrder) {
+    this->priorityCode = priority;
     this->name = name;
     this->arrivalOrder = arrivalOrder;
 }

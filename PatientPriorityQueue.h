@@ -65,7 +65,18 @@ PatientPriorityQueue::PatientPriorityQueue() {
 }
 
 void PatientPriorityQueue::add(const string &priority, const string &name) {
-    patients.emplace_back(priority, name, nextPatientNumber++);
+    int priorityCode;
+
+    if (priority == "immediate")
+        priorityCode = 1;
+    else if (priority == "emergency")
+        priorityCode = 2;
+    else if (priority == "urgent")
+        priorityCode = 3;
+    else
+        priorityCode = 4;
+
+    patients.emplace_back(priorityCode, name, nextPatientNumber++);
     siftUp(patients.size() - 1);
 }
 
