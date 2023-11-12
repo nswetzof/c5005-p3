@@ -181,7 +181,7 @@ void PatientPriorityQueue::siftUp(int index) {
 }
 
 void PatientPriorityQueue::siftDown(int index) {
-    int leftIdx, rightIdx, minIdx;
+    size_t leftIdx, rightIdx, minIdx;
     leftIdx = getLeftChild(index);
     rightIdx = getRightChild(index);
 
