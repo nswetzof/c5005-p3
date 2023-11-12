@@ -1,6 +1,6 @@
 // Nathan Swetzof
 // PatientPriorityQueue.h
-// November 4, 2023
+// November 12, 2023
 // Specification and implementation file for PatientPriorityQueue class used
 //      to create a priority queue for patients entered into an emergency room.
 
@@ -18,49 +18,82 @@
 class PatientPriorityQueue {
 public:
     PatientPriorityQueue();
-    // Default constructor creates empty vector of patients and initializes
-    //      nextPatient number to 1
+    // Default constructor
+    // precondition: none
+    // postcondition: initializes patients vector as empty vector and assigns
+    //      nextPatient value to 1
 
     void add(const string &, const string &);
-    // Add patient, with name and priority code passed into function, to
-    //      priority queue.  Maintains min-heap ordering after addition.
+    // Add Patient, with name and priority code passed into function, to
+    //      priority queue.
+    // preconditions: priority code must be "immediate", "emergency", "urgent",
+    //      or "minimal"
+    // postcondition: Patient is added to patients vector.  Maintains min-heap
+    //      ordering after addition.
 
     Patient peek() const;
-    // Return highest priority patient in the priority queue without removing
+    // Return highest priority Patient in the priority queue without removing
+    // precondition: patients vector is not empty
+    // postcondition: returns highest priority Patient
 
     Patient remove();
-    // Remove the highest priority patient from the priority queue and returns
-    //      patient.  Maintains min-heap ordering in priority queue after
+    // Remove the highest priority patient from the priority queue
+    // precondition: patients vector is not empty
+    // postcondition: highest priority Patient is removed from the patients
+    //      vector and returned.  Maintains min-heap ordering in vector after
     //      removal.
 
     int size() const;
     // Return number of patients still waiting
+    // preconditon: none
+    // postcondition: returns size of patients vector
 
     string to_string() const;
-    // Return string representation of object in min-heap order
+    // Return string representation of all Patients in the waiting list
+    // precondition: none
+    // postcondition: returns multiline string with each line consisting of
+    //      arrival order, priority, and name of each patient in min-heap
+    //      order.
 
 private:
     vector<Patient> patients;
     int nextPatientNumber;
 
     void siftUp(int);
-    // Moves the element at index passed into function to its parent
-    //      in the priority queue recursively until it satisfies the min-heap
-    //      condition
+    // Moves the element at given index up the heap such that the min-heap
+    //      condition is maintained
+    // precondition: value passed into function represents a valid index
+    //    in the patients vector
+    // postcondition: moves the element in patients vector, at index passed into
+    //      function, to its parent in the priority queue recursively until it
+    //      satisfies the min-heap condition
 
     void siftDown(int);
-    // Moves the element at index passed into function to its left or right
-    //      child in the priority queue recursively until it satisfies the
-    //      min-heap condition
+    // Moves the element at given index down the heap such that the min-heap
+    //      condition is maintained
+    // precondition: value passed into function represents a valid index
+    //      in the patients vector
+    // postcondition: Moves the element at index passed into function to its
+    //      left or right child in the priority queue recursively until it
+    //      satisfies the min-heap condition
 
     int getParent(int);
     // Return parent index of index passed into function
+    // precondition: value passed into function represents a valid index
+    //      in the patients vector
+    // postcondition: returns index of parent in the priority queue
 
     int getLeftChild(int);
     // Return left child index of index passed into function
+    // precondition: value passed into function represents a valid index
+    //      in the patients vector
+    // postcondition: returns index of left child in the priority queue
 
     int getRightChild(int);
     // Return right child index of index passed into function
+    // precondition: value passed into function represents a valid index
+    //      in the patients vector
+    // postcondition: returns index of right child in the priority queue
 };
 
 PatientPriorityQueue::PatientPriorityQueue() {
