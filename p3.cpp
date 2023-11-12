@@ -65,7 +65,6 @@ int main() {
 
 	// process commands
 	PatientPriorityQueue priQueue;
-    execCommandsFromFileCmd("commands.txt", priQueue); // TODO: DELETE
 	do {
 		cout << "\ntriage> ";
 		getline(cin, line);
@@ -176,16 +175,17 @@ void execCommandsFromFileCmd(string filename, PatientPriorityQueue &priQueue) {
 }
 
 string delimitBySpace(string &s) {
-	unsigned pos = 0;
-	char delimiter = ' ';
-	string result = ""; 
+    const char SPACE = ' ';
+    size_t pos = 0;
+    string result = "";
 
-	pos = s.find(delimiter);
-	if (pos != string::npos) {
-		result = s.substr(0, pos);
-		s.erase(0, pos + 1);
-	}
-	return result;
+    pos = s.find(SPACE);
+    if (pos == string::npos)
+        return s;
+
+    result = s.substr(0, pos);
+    s.erase(0, pos + 1);
+    return result;
 }
 
 void welcome() {

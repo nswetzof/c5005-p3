@@ -39,7 +39,6 @@ public:
     bool operator==(const Patient &) const;
     // Equals operator for two Patients.  Return true if both Patients have
     //      same priority codes and arrival orders, false otherwise.
-    // TODO: Confirm this is desired behavior (not just priority code?)
 
     bool operator<=(const Patient &) const;
     // Less than or equals operator returns true if Patient object passed into
