@@ -1,6 +1,6 @@
 // Nathan Swetzof
 // Patient.h
-// November 4, 2023
+// November 12, 2023
 // Specification and implementation file for Patient class used to represent
 //      a single patient in a priority queue.  Implements comparison operators
 //      to determine relative priority between patients.
@@ -19,9 +19,15 @@ public:
     // Default constructor creates patient with priority code corresponding
     //      with first parameter, name corresponding with second parameter, and
     //      arrival order corresponding with third parameter
+    // preconditions: priority code must be in range 1 to 4,
+    //      arrival order must be greater than 0
+    // postcondition: name, priorityCode, and arrivalOrder are assigned to
+    //      the values passed into the constructor
 
     bool operator<(const Patient &) const;
-    // Less than operator for two Patients.  Return true if Patient passed into
+    // Less than operator to compare two Patients.
+    // precondition: none
+    // postcondition: Return true if Patient passed into
     //      function has higher priority (based on priority code) than
     //      this Patient.  If Patient passed into function has higher priority
     //      than this Patient, return false.  If both Patients have same
@@ -29,7 +35,9 @@ public:
     //      than the Patient passed into function.  Otherwise, return false.
 
     bool operator>(const Patient &) const;
-    // Greater than operator for two Patients.  Return true if Patient passed
+    // Greater than operator for two Patients.
+    // precondition: none
+    // postcondition: Return true if Patient passed
     //      into function has lower priority (based on priority code) than
     //      this Patient.  If Patient passed into function has lower priority
     //      than this Patient, return false.  If both Patients have same
@@ -37,19 +45,27 @@ public:
     //      than the Patient passed into function.  Otherwise, return false.
 
     bool operator==(const Patient &) const;
-    // Equals operator for two Patients.  Return true if both Patients have
+    // Equals operator for two Patients.
+    // precondition: none
+    // postcondition: Return true if both Patients have
     //      same priority codes and arrival orders, false otherwise.
 
     bool operator<=(const Patient &) const;
-    // Less than or equals operator returns true if Patient object passed into
+    // Less than or equals operator
+    // precondition: none
+    // postcondition: Returns true if Patient object passed into
     //      function satisfies less than and equals operator conditions
 
     bool operator>=(const Patient &) const;
-    // Greater than or equals operator returns true if Patient object passed
+    // Greater than or equals operator
+    // precondition: none
+    // postcondition: returns true if Patient object passed
     //      into function satisfies greater than and equals operator conditions
 
     string to_string() const;
-    // Return string representation of Patient, indicating arrival number,
+    // String representation of the Patient
+    // precondition: none
+    // postcondition: Return string indicating arrival number,
     //      priority code, and patient name
 
 private:
@@ -58,8 +74,9 @@ private:
     int arrivalOrder; // order of patient arrival in emergency room
 
     string getPriorityString() const;
-    // Return string corresponding to priority code based on priority code
-    //      integer field.
+    // Return string representation of Patient priority
+    // precondition: none
+    // postcondition: Return string corresponding to priorityCode field
 };
 
 Patient::Patient(int priority, const string &name, int arrivalOrder) {
