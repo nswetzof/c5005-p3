@@ -67,10 +67,11 @@ public:
     // preconditions: none
     // postcondition: returns name
 
-    int getPriorityCode() const;
+    string getPriorityCode() const;
     // Returns the priority code of the Patient
     // preconditions: none
-    // postcondition: returns priorityCode
+    // postcondition: returns the priority code string corresponding to the
+    //      value of priorityCode
 
     int getArrivalOrder() const;
     // Returns the order in which the patient arrived
@@ -135,8 +136,8 @@ string Patient::getName() const {
     return name;
 }
 
-int Patient::getPriorityCode() const {
-    return priorityCode;
+string Patient::getPriorityCode() const {
+    return getPriorityString();
 }
 
 int Patient::getArrivalOrder() const {
