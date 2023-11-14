@@ -10,7 +10,7 @@
 // Output: Displays patient information for all patients or for the highest
 //      priority patient.
 
-#include "PatientPriorityQueue.h"
+#include "PatientPriorityQueuex.h"
 
 #include <fstream>
 #include <iostream>

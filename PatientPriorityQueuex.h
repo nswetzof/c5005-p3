@@ -4,8 +4,8 @@
 // Specification and implementation file for PatientPriorityQueue class used
 //      to create a priority queue for patients entered into an emergency room.
 
-#ifndef P3_PATIENTPRIORITYQUEUE_H
-#define P3_PATIENTPRIORITYQUEUE_H
+#ifndef P3_PATIENTPRIORITYQUEUEX_H
+#define P3_PATIENTPRIORITYQUEUEX_H
 
 
 #include <cassert>
@@ -221,4 +221,4 @@ int PatientPriorityQueue::getRightChild(int index) {
 }
 
 
-#endif //P3_PATIENTPRIORITYQUEUE_H
+#endif //P3_PATIENTPRIORITYQUEUEX_H
