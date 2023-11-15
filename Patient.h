@@ -1,6 +1,6 @@
 // Nathan Swetzof
 // Patient.h
-// November 12, 2023
+// November 14, 2023
 // Specification and implementation file for Patient class used to represent
 //      a single patient in a priority queue.  Implements comparison operators
 //      to determine relative priority between patients.

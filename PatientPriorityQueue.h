@@ -1,6 +1,6 @@
 // Nathan Swetzof
 // PatientPriorityQueue.h
-// November 12, 2023
+// November 14, 2023
 // Specification and implementation file for PatientPriorityQueue class used
 //      to create a priority queue for patients entered into an emergency room.
 
@@ -142,26 +142,19 @@ int PatientPriorityQueue::size() const {
 
 string PatientPriorityQueue::to_string() const {
     stringstream ss;
-    string patientInfo, name, priorityCode, arrivalOrder;
-    size_t spaceAfterName, priorityIndex, arrivalIndex;
+    string name, priorityCode;
+    int arrivalOrder;
     vector<Patient>::const_iterator it = patients.begin();
 
     while(it != patients.end()) {
-        patientInfo = it++->to_string();
-
-        spaceAfterName = patientInfo.find_first_of('{') - 1;
-        priorityIndex = patientInfo.find_first_of('=') + 1;
-        arrivalIndex = patientInfo.find_first_of('=', priorityIndex + 1) + 1;
-
-        name = patientInfo.substr(0, spaceAfterName);
-        priorityCode = patientInfo.substr(priorityIndex,
-                          patientInfo.find_first_of(',') - priorityIndex);
-        arrivalOrder = patientInfo.substr(arrivalIndex,
-                          patientInfo.find_first_of(' ', arrivalIndex)
-                          - arrivalIndex);
+        name = it->getName();
+        priorityCode = it->getPriorityCode();
+        arrivalOrder = it->getArrivalOrder();
 
         ss << right << setw(7) << arrivalOrder << "\t\t"
-            << left << setw(15) << priorityCode << name << '\n';
+           << left << setw(15) << priorityCode << name << '\n';
+
+        it++;
     }
 
     return ss.str();
