@@ -178,17 +178,6 @@ string PatientPriorityQueue::to_string() const {
     return ss.str();
 }
 
-int PatientPriorityQueue::getPriorityCode(const string &priorityString) {
-    if (priorityString == "immediate")
-        return 1;
-    else if (priorityString == "emergency")
-        return 2;
-    else if (priorityString == "urgent")
-        return 3;
-    else
-        return 4;
-}
-
 string PatientPriorityQueue::change(int arrivalOrder,
                                     const string &priority) {
     int newPriority = getPriorityCode(priority);
@@ -285,5 +274,15 @@ int PatientPriorityQueue::getRightChild(int index) {
     return 2 * index + 2;
 }
 
+int PatientPriorityQueue::getPriorityCode(const string &priorityString) {
+    if (priorityString == "immediate")
+        return 1;
+    else if (priorityString == "emergency")
+        return 2;
+    else if (priorityString == "urgent")
+        return 3;
+    else
+        return 4;
+}
 
 #endif //P3_PATIENTPRIORITYQUEUEX_H
