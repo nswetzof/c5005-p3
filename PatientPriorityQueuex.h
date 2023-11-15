@@ -55,6 +55,19 @@ public:
     //      arrival order, priority, and name of each patient in min-heap
     //      order.
 
+    bool change(int, const string &);
+    // Change priority code of a patient given an arrival order
+    // preconditions: new priority code must be "immediate", "emergency",
+    //      "urgent", or "minimal";
+    //      Patient arrival order must match an arrival order in the patients
+    //      vector
+    // postcondition: The priority code of the Patient associated with the
+    //      arrival order integer passed into the function will be updated to
+    //      the priority code corresponding with the string passed into the
+    //      function.  Function returns true if the change was successful.  If
+    //      arrival order is not found within the patients vector, returns
+    //      false.
+
 private:
     vector<Patient> patients;
     int nextPatientNumber;
@@ -142,29 +155,49 @@ int PatientPriorityQueue::size() const {
 
 string PatientPriorityQueue::to_string() const {
     stringstream ss;
-    string patientInfo, name, priorityCode, arrivalOrder;
-    size_t spaceAfterName, priorityIndex, arrivalIndex;
+    string name, priorityCode;
+    int arrivalOrder;
     vector<Patient>::const_iterator it = patients.begin();
 
     while(it != patients.end()) {
-        patientInfo = it++->to_string();
-
-        spaceAfterName = patientInfo.find_first_of('{') - 1;
-        priorityIndex = patientInfo.find_first_of('=') + 1;
-        arrivalIndex = patientInfo.find_first_of('=', priorityIndex + 1) + 1;
-
-        name = patientInfo.substr(0, spaceAfterName);
-        priorityCode = patientInfo.substr(priorityIndex,
-                          patientInfo.find_first_of(',') - priorityIndex);
-        arrivalOrder = patientInfo.substr(arrivalIndex,
-                          patientInfo.find_first_of(' ', arrivalIndex)
-                          - arrivalIndex);
+        name = it->getName();
+        priorityCode = it->getPriorityCode();
+        arrivalOrder = it->getArrivalOrder();
 
         ss << right << setw(7) << arrivalOrder << "\t\t"
             << left << setw(15) << priorityCode << name << '\n';
+
+        it++;
     }
 
     return ss.str();
+}
+
+bool PatientPriorityQueue::change(int arrivalOrder,
+                                    const string &priorityCode) {
+    vector<Patient>::const_iterator it = patients.begin();
+    int newPriority;
+
+    while(it != patients.end()) {
+        if (it->getArrivalOrder() == arrivalOrder) {
+            string priorityString = it->getPriorityCode();
+            if (priorityString == "immediate")
+                newPriority = 1;
+            else if (priorityString == "emergency")
+                newPriority = 2;
+            else if (priorityString == "urgent")
+                newPriority = 3;
+            else
+                newPriority = 4;
+
+            Patient newPatient(newPriority, it->getName(),
+                               it->getArrivalOrder());
+
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void PatientPriorityQueue::siftUp(int index) {
