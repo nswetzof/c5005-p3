@@ -10,6 +10,7 @@
 
 #include <cassert>
 #include <iomanip>
+#include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -107,6 +108,11 @@ private:
     // precondition: value passed into function represents a valid index
     //      in the patients vector
     // postcondition: returns index of right child in the priority queue
+
+    int getPriorityCode(const string &) const;
+    // Return integer associated with priority code string passed into function
+    // precondition: none
+    // postcondition: returns priority code of string passed into function
 };
 
 PatientPriorityQueue::PatientPriorityQueue() {
@@ -114,16 +120,7 @@ PatientPriorityQueue::PatientPriorityQueue() {
 }
 
 void PatientPriorityQueue::add(const string &priority, const string &name) {
-    int priorityCode;
-
-    if (priority == "immediate")
-        priorityCode = 1;
-    else if (priority == "emergency")
-        priorityCode = 2;
-    else if (priority == "urgent")
-        priorityCode = 3;
-    else
-        priorityCode = 4;
+    int priorityCode = getPriorityCode(priority);
 
     patients.emplace_back(priorityCode, name, nextPatientNumber++);
     siftUp(patients.size() - 1);
@@ -173,25 +170,34 @@ string PatientPriorityQueue::to_string() const {
     return ss.str();
 }
 
+int PatientPriorityQueue::getPriorityCode(const string &priorityString) const {
+    if (priorityString == "immediate")
+        return 1;
+    else if (priorityString == "emergency")
+        return 2;
+    else if (priorityString == "urgent")
+        return 3;
+    else
+        return 4;
+}
+
 bool PatientPriorityQueue::change(int arrivalOrder,
                                     const string &priorityCode) {
-    vector<Patient>::const_iterator it = patients.begin();
     int newPriority;
 
-    while(it != patients.end()) {
-        if (it->getArrivalOrder() == arrivalOrder) {
-            string priorityString = it->getPriorityCode();
-            if (priorityString == "immediate")
-                newPriority = 1;
-            else if (priorityString == "emergency")
-                newPriority = 2;
-            else if (priorityString == "urgent")
-                newPriority = 3;
-            else
-                newPriority = 4;
+    for (int i = 0; i < patients.size(); i++) {
+        Patient patient = patients.at(i);
+        if (patient.getArrivalOrder() == arrivalOrder) {
+            Patient newPatient(getPriorityCode(priorityCode),
+                               patient.getName(),
+                               patient.getArrivalOrder());
+            patients.at(i) = newPatient;
+            cout << patients.at(i).to_string() << endl;
 
-            Patient newPatient(newPriority, it->getName(),
-                               it->getArrivalOrder());
+            if (newPriority < getPriorityCode(patient.getPriorityCode()))
+                siftUp(i);
+            else
+                siftDown(i);
 
             return true;
         }
