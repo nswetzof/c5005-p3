@@ -62,6 +62,22 @@ public:
     // postcondition: returns true if Patient object passed
     //      into function satisfies greater than and equals operator conditions
 
+    string getName() const;
+    // Returns the name of the Patient
+    // preconditions: none
+    // postcondition: returns name
+
+    string getPriorityCode() const;
+    // Returns the priority code of the Patient
+    // preconditions: none
+    // postcondition: returns the priority code string corresponding to the
+    //      value of priorityCode
+
+    int getArrivalOrder() const;
+    // Returns the order in which the patient arrived
+    // preconditions: none
+    // postcondition: returns arrivalOrder
+
     string to_string() const;
     // String representation of the Patient
     // precondition: none
@@ -114,6 +130,18 @@ bool Patient::operator<=(const Patient &right) const {
 
 bool Patient::operator>=(const Patient &right) const {
     return ((*this) > right || (*this) == right);
+}
+
+string Patient::getName() const {
+    return name;
+}
+
+string Patient::getPriorityCode() const {
+    return getPriorityString();
+}
+
+int Patient::getArrivalOrder() const {
+    return arrivalOrder;
 }
 
 string Patient::to_string() const {
