@@ -8,6 +8,7 @@
 #define P3_PATIENTPRIORITYQUEUEX_H
 
 
+#include <algorithm>
 #include <cassert>
 #include <iomanip>
 #include <iostream>
@@ -69,8 +70,12 @@ public:
     //      priority if the change was successful.  Otherwise, returns error
     //      message indicating arrival order was not found.
 
-    vector<string> save() const;
-    //
+    string save() const;
+    // Return string containing patient names and priorities which can be
+    //      saved to a file
+    // preconditions: none
+    // postconditions: string is returned containing patient priority codes
+    //      and names, one patient per line, ordered by arrival number
 
 private:
     vector<Patient> patients;
@@ -209,9 +214,24 @@ string PatientPriorityQueue::change(int arrivalOrder,
     return "Error: no patient with the given id was found.";
 }
 
-vector<string> PatientPriorityQueue::save() const {
-    vector<string> copy;
-    for(int i = 0)
+string PatientPriorityQueue::save() const {
+    vector<Patient> copy; // hold a copy of the patients vector
+    stringstream ss;
+
+    for(int i = 0; i < patients.size(); i++)
+        copy.push_back(patients.at(i));
+
+    // sort by patient arrival time
+    sort(copy.begin(), copy.end(), [](Patient x, Patient y){
+        return x.getArrivalOrder() < y.getArrivalOrder();
+        }
+    );
+
+    for (int i = 0; i < patients.size(); i++)
+        ss << "add " << patients.at(i).getPriorityCode() << " "
+            << patients.at(i).getName() << '\n';
+
+    return ss.str();
 }
 
 void PatientPriorityQueue::siftUp(int index) {
