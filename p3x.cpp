@@ -51,6 +51,10 @@ void changeCmd(string &, PatientPriorityQueue &);
 // Changes the priority code of a patient in the waiting room based on arrival
 //  order and priority code typed into the command prompt
 
+void saveCmd(string &, PatientPriorityQueue &);
+// Saves the current waiting list to a file for later reloading, maintaining
+//  arrival order
+
 string delimitBySpace(string &);
 // Delimits (by space) the string from user or file input.
 
@@ -101,6 +105,8 @@ bool processLine(string line, PatientPriorityQueue &priQueue) {
 		execCommandsFromFileCmd(line, priQueue);
     else if (cmd == "change")
         changeCmd(line, priQueue);
+    else if (cmd == "save")
+        saveCmd(line, priQueue);
 	else if (cmd == "quit")
 		return false;
 	else
@@ -198,6 +204,11 @@ void changeCmd(string &line, PatientPriorityQueue &priQueue) {
         changedString = priQueue.change(stoi(arrivalOrder), priority);
         cout << changedString << endl;
     }
+}
+
+void saveCmd(string &filename, PatientPriorityQueue &priQueue) {
+    ofstream file(filename);
+    priQueue.save(file);
 }
 
 string delimitBySpace(string &s) {

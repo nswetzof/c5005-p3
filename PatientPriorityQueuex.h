@@ -11,7 +11,6 @@
 #include <algorithm>
 #include <cassert>
 #include <iomanip>
-#include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -70,12 +69,13 @@ public:
     //      priority if the change was successful.  Otherwise, returns error
     //      message indicating arrival order was not found.
 
-    string save() const;
-    // Return string containing patient names and priorities which can be
-    //      saved to a file
+    void save(ostream &) const;
+    // Save patient names and priorities to a file
     // preconditions: none
-    // postconditions: string is returned containing patient priority codes
-    //      and names, one patient per line, ordered by arrival number
+    // postcondition: add patient statements are added to the ostream object
+    //      reference passed into function with one patient per line including
+    //      patient priority and patient name. File is written by order of
+    //      arrival of patients.
 
 private:
     vector<Patient> patients;
@@ -195,6 +195,7 @@ string PatientPriorityQueue::change(int arrivalOrder,
 
     for (int i = 0; i < patients.size(); i++) {
         Patient patient = patients.at(i);
+
         if (patient.getArrivalOrder() == arrivalOrder) {
             Patient newPatient(getPriorityCode(priority),
                                patient.getName(),
@@ -214,24 +215,21 @@ string PatientPriorityQueue::change(int arrivalOrder,
     return "Error: no patient with the given id was found.";
 }
 
-string PatientPriorityQueue::save() const {
+void PatientPriorityQueue::save(ostream &file) const {
     vector<Patient> copy; // hold a copy of the patients vector
-    stringstream ss;
 
     for(int i = 0; i < patients.size(); i++)
         copy.push_back(patients.at(i));
 
     // sort by patient arrival time
-    sort(copy.begin(), copy.end(), [](Patient x, Patient y){
+    sort(copy.begin(), copy.end(), [](Patient &x, Patient &y){
         return x.getArrivalOrder() < y.getArrivalOrder();
         }
     );
 
     for (int i = 0; i < patients.size(); i++)
-        ss << "add " << patients.at(i).getPriorityCode() << " "
-            << patients.at(i).getName() << '\n';
-
-    return ss.str();
+        file << "add " << copy.at(i).getPriorityCode() << " "
+            << copy.at(i).getName() << '\n';
 }
 
 void PatientPriorityQueue::siftUp(int index) {
