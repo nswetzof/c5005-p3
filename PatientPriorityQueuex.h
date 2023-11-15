@@ -56,7 +56,7 @@ public:
     //      arrival order, priority, and name of each patient in min-heap
     //      order.
 
-    bool change(int, const string &);
+    string change(int, const string &);
     // Change priority code of a patient given an arrival order
     // preconditions: new priority code must be "immediate", "emergency",
     //      "urgent", or "minimal";
@@ -65,9 +65,12 @@ public:
     // postcondition: The priority code of the Patient associated with the
     //      arrival order integer passed into the function will be updated to
     //      the priority code corresponding with the string passed into the
-    //      function.  Function returns true if the change was successful.  If
-    //      arrival order is not found within the patients vector, returns
-    //      false.
+    //      function.  Function returns string indicating patient name and new
+    //      priority if the change was successful.  Otherwise, returns error
+    //      message indicating arrival order was not found.
+
+    vector<string> save() const;
+    //
 
 private:
     vector<Patient> patients;
@@ -109,7 +112,7 @@ private:
     //      in the patients vector
     // postcondition: returns index of right child in the priority queue
 
-    int getPriorityCode(const string &) const;
+    static int getPriorityCode(const string &);
     // Return integer associated with priority code string passed into function
     // precondition: none
     // postcondition: returns priority code of string passed into function
@@ -170,7 +173,7 @@ string PatientPriorityQueue::to_string() const {
     return ss.str();
 }
 
-int PatientPriorityQueue::getPriorityCode(const string &priorityString) const {
+int PatientPriorityQueue::getPriorityCode(const string &priorityString) {
     if (priorityString == "immediate")
         return 1;
     else if (priorityString == "emergency")
@@ -181,29 +184,34 @@ int PatientPriorityQueue::getPriorityCode(const string &priorityString) const {
         return 4;
 }
 
-bool PatientPriorityQueue::change(int arrivalOrder,
-                                    const string &priorityCode) {
-    int newPriority;
+string PatientPriorityQueue::change(int arrivalOrder,
+                                    const string &priority) {
+    int newPriority = getPriorityCode(priority);
 
     for (int i = 0; i < patients.size(); i++) {
         Patient patient = patients.at(i);
         if (patient.getArrivalOrder() == arrivalOrder) {
-            Patient newPatient(getPriorityCode(priorityCode),
+            Patient newPatient(getPriorityCode(priority),
                                patient.getName(),
                                patient.getArrivalOrder());
             patients.at(i) = newPatient;
-            cout << patients.at(i).to_string() << endl;
 
             if (newPriority < getPriorityCode(patient.getPriorityCode()))
                 siftUp(i);
             else
                 siftDown(i);
 
-            return true;
+            return "Changed patient " + patient.getName() + "'s priority to "
+                + priority;
         }
     }
 
-    return false;
+    return "Error: no patient with the given id was found.";
+}
+
+vector<string> PatientPriorityQueue::save() const {
+    vector<string> copy;
+    for(int i = 0)
 }
 
 void PatientPriorityQueue::siftUp(int index) {

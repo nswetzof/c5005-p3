@@ -47,6 +47,10 @@ void execCommandsFromFileCmd(string, PatientPriorityQueue &);
 // Reads a text file with each command on a separate line and executes the
 // lines as if they were typed into the command prompt.
 
+void changeCmd(string &, PatientPriorityQueue &);
+// Changes the priority code of a patient in the waiting room based on arrival
+//  order and priority code typed into the command prompt
+
 string delimitBySpace(string &);
 // Delimits (by space) the string from user or file input.
 
@@ -95,6 +99,8 @@ bool processLine(string line, PatientPriorityQueue &priQueue) {
 		showPatientListCmd(priQueue);
 	else if (cmd == "load")
 		execCommandsFromFileCmd(line, priQueue);
+    else if (cmd == "change")
+        changeCmd(line, priQueue);
 	else if (cmd == "quit")
 		return false;
 	else
@@ -172,6 +178,26 @@ void execCommandsFromFileCmd(string filename, PatientPriorityQueue &priQueue) {
 	}
 	// close file
 	infile.close();
+}
+
+void changeCmd(string &line, PatientPriorityQueue &priQueue) {
+    string arrivalOrder, priority;
+    string changedString;
+
+    arrivalOrder = delimitBySpace(line);
+    priority = delimitBySpace(line);
+
+    if (arrivalOrder.empty())
+        cout << "Error: No patient id provided" << endl;
+    else if (priority.empty())
+        cout << "Error: No priority code given" << endl;
+    else if (priority != "immediate" || priority != "emergency"
+        || priority != "urgent" || priority != "minimal")
+        cout << "Error: invalid priority level code" << endl;
+    else {
+        changedString = priQueue.change(stoi(arrivalOrder), priority);
+        cout << changedString << endl;
+    }
 }
 
 string delimitBySpace(string &s) {
